@@ -1,0 +1,38 @@
+the postgresql is working on mac, using following commands in mac
+
+brew services list
+
+brew services start postgresql
+
+psql
+
+with this command, i entered the database.
+
+---
+
+-   **Create a new user**:
+
+    ```sql
+    CREATE USER fellowship WITH PASSWORD 'hello123';
+    ```
+
+-   **Create a new database**:
+
+    ```sql
+    CREATE DATABASE fellowship;
+    ```
+
+-   **Grant full access on the database to the user**:
+
+    ```sql
+    GRANT ALL PRIVILEGES ON DATABASE fellowship TO fellowship;
+    ```
+
+To resolve permission problems, grant the necessary privileges and change the schema owner:
+
+```sql
+GRANT ALL PRIVILEGES ON SCHEMA public TO fellowship;
+ALTER SCHEMA public OWNER TO fellowship;
+```
+
+
