@@ -10,6 +10,10 @@
 
 
 
+
+
+
+
 # Commands that are helpful
 
 sudo -u postgres psql
