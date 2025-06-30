@@ -1,1 +1,1 @@
-API_KEY = "sk_live_12345"
+API_KEY = "sk_live_12345" # api key mistakenly exposed
