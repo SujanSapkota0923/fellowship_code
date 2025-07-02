@@ -1,30 +1,19 @@
-####################################################################
-# Builder stage
-####################################################################
-FROM node:18-slim AS builder
 
-WORKDIR /app
+# Stage 1 - Build Stage
 
-COPY package*.json ./
-RUN npm install
-
+FROM node:18 as BUILD
+WORKDIR /App
 COPY . .
+RUN yarn install
+RUN yarn build
 
-RUN npm run build
+# Stage 2 - Production Image
 
-####################################################################
-# Production stage
-####################################################################
-FROM nginx:alpine AS production
+FROM nginx:alpine as PRODUCTION
+COPY --from=BUILD /App/dist /var/www/html
+COPY --from=BUILD /App/default.conf /etc/nginx/conf.d/default.conf
 
-# Clean default nginx content
-RUN rm -rf /usr/share/nginx/html/*
-
-# Copy build files to nginx
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-# Expose port nginx runs on
 EXPOSE 80
 
-# Start nginx
 CMD ["nginx", "-g", "daemon off;"]
+
