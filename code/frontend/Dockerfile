@@ -9,9 +9,9 @@ RUN yarn build
 
 # Stage 2 - Production Image
 
-FROM nginx:latest as PRODUCTION
-COPY --from = BUILD /App/dist /var/www/html
-COPY --from = BUILD /App/default.conf /etc/nginx/conf.d/default.conf
+FROM nginx:alpine as PRODUCTION
+COPY --from=BUILD /App/dist /var/www/html
+COPY --from=BUILD /App/default.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
