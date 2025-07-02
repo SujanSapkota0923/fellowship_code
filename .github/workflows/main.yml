@@ -40,22 +40,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Install packages of backend2
-        working-directory: backend2
+        working-directory: ./code/backend2
         run: yarn
       - name: Install packages of backend1
-        working-directory: backend1
+        working-directory: ./code/backend1
         run: yarn
       - name: Install packages of frontend
-        working-directory: frontend
+        working-directory: ./code/frontend
         run: yarn
       - name: Run lint on backend1
-        working-directory: backend1
+        working-directory: ./code/backend1
         run: yarn lint
       - name: Run lint on backend2
-        working-directory: backend2
+        working-directory: ./code/backend2
         run: yarn lint
       - name: Run lint on frontend
-        working-directory: frontend
+        working-directory: ./code/frontend
         run: yarn lint
   build_docker:
     runs-on: ubuntu-latest
@@ -74,7 +74,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: backend1
-          file: backend1/Dockerfile
+          file: ./code/backend1/Dockerfile
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.BACKEND1_IMAGE_NAME }}:dev-${{ github.sha }}
@@ -83,7 +83,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: backend2
-          file: backend2/Dockerfile
+          file: ./code/backend2/Dockerfile
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.BACKEND2_IMAGE_NAME }}:dev-${{ github.sha }}
@@ -92,7 +92,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: frontend
-          file: frontend/Dockerfile
+          file: ./code/frontend/Dockerfile
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:dev-${{ github.sha }}
