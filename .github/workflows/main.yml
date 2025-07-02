@@ -7,9 +7,9 @@ on:
       - dev
 env:
   REGISTRY: docker.io
-  FRONTEND_IMAGE_NAME: susilkafle/frontend
-  BACKEND1_IMAGE_NAME: susilkafle/backend1
-  BACKEND2_IMAGE_NAME: susilkafle/backend2
+  FRONTEND_IMAGE_NAME: sujan0923/frontend
+  BACKEND1_IMAGE_NAME: sujan0923/backend1
+  BACKEND2_IMAGE_NAME: sujan0923/backend2
 jobs:
   commitlint:
     runs-on: ubuntu-latest
@@ -97,8 +97,3 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:dev-${{ github.sha }}
             ${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:dev-latest
-
-
-
-
-
