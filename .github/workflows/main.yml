@@ -16,12 +16,12 @@ jobs:
 
             - name: Install Frontend Dependencies
               run: |
-                  cd frontend
+                  cd code/frontend
                   yarn install
 
             - name: Build Frontend
               run: |
-                  cd frontend
+                  cd code/frontend
                   yarn build
 
     backend:
@@ -33,20 +33,20 @@ jobs:
 
             - name: Install Backend Dependencies
               run: |
-                  cd backend1
+                  cd code/backend1
                   yarn install
 
             - name: Build Backend1
               run: |
-                  cd backend1
+                  cd code/backend1
                   yarn build
 
             - name: Install Backend2 Dependencies
               run: |
-                  cd ../backend2
+                  cd code/backend2
                   yarn install
 
             - name: Build Backend2
               run: |
-                  cd backend2
+                  cd code/backend2
                   yarn build
