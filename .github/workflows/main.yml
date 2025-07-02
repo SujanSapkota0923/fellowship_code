@@ -33,7 +33,7 @@ jobs:
               run: |
                   git log origin/${{ github.base_ref }}..HEAD --pretty=format:"%s" | npx commitlint
     checK_lint:
-        runs-on: ubuntu-latest
+        runs-on: ARM64
         if: github.event_name == 'pull_request' && startsWith(github.head_ref, 'feature') && github.base_ref == 'dev'
         needs: ["commitlint"]
         steps:
