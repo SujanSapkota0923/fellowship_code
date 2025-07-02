@@ -8,7 +8,7 @@ on:
 env:
   REGISTRY: docker.io
   FRONTEND_IMAGE_NAME: sujan0923/frontend
-  BACKEND1_IMAGE_NAME: sujan00923/backend1
+  BACKEND1_IMAGE_NAME: sujan0923/backend1
   BACKEND2_IMAGE_NAME: sujan0923/backend2
 jobs:
   commitlint:
