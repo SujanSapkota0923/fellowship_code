@@ -2,7 +2,7 @@
 # Stage 1 - Build Stage
 
 FROM node:18 as BUILD
-WORKDIR /app
+WORKDIR /App
 COPY . .
 RUN yarn install
 RUN yarn build
