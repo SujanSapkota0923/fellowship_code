@@ -73,7 +73,7 @@ jobs:
       - name: Build and Push Backend1 Image
         uses: docker/build-push-action@v5
         with:
-          context: backend1
+          context: ./code/backend1
           file: ./code/backend1/Dockerfile
           push: true
           tags: |
@@ -82,7 +82,7 @@ jobs:
       - name: Build and Push Backend2 Image
         uses: docker/build-push-action@v5
         with:
-          context: backend2
+          context: ./code/backend2
           file: ./code/backend2/Dockerfile
           push: true
           tags: |
@@ -91,7 +91,7 @@ jobs:
       - name: Build and Push Frontend Image
         uses: docker/build-push-action@v5
         with:
-          context: frontend
+          context: ./code/frontend
           file: ./code/frontend/Dockerfile
           push: true
           tags: |
