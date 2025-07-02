@@ -12,7 +12,7 @@ env:
   BACKEND2_IMAGE_NAME: sujan0923/backend2
 jobs:
   commitlint:
-    runs-on: ubuntu-latest
+    runs-on: [ARM64]
     if: github.event_name == 'pull_request' && (github.head_ref == 'feature' || startsWith(github.head_ref, 'feature/')) && github.base_ref == 'dev'
     steps:
       - name: Checkout code
