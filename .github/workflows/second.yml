@@ -10,9 +10,12 @@ jobs:
     frontend:
         name: Build Frontend
         runs-on: [First]
+        if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
+        paths:
+            - "code/frontend/**"
         steps:
             - name: Checkout Code
-              uses: actions/checkout@v4
+              uses: actions/check out@v4
 
             - name: Install Frontend Dependencies
               run: |
@@ -27,11 +30,15 @@ jobs:
     backend:
         name: Build Backend
         runs-on: [second]
+        if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
+        paths:
+            - "code/backend1/**"
+            - "code/backend2/**"
         steps:
             - name: Checkout Code
               uses: actions/checkout@v4
 
-            - name: Install Backend Dependencies
+            - name: Install Backend1 Dependencies
               run: |
                   cd code/backend1
                   yarn install
