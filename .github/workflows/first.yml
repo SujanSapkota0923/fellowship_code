@@ -13,10 +13,10 @@ on:
 jobs:
     frontend:
         name: Build Frontend
-        runs-on: [First]
+        runs-on: First
         steps:
             - name: Checkout Code
-              uses: actions/check out@v4
+              uses: actions/checkout@v4
 
             - name: Install Frontend Dependencies
               run: |

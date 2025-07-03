@@ -15,7 +15,7 @@ on:
 jobs:
     backend:
         name: Build Backend
-        runs-on: [second]
+        runs-on: second
         if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
         steps:
             - name: Checkout Code
