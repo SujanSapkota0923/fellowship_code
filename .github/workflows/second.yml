@@ -3,37 +3,20 @@ name: FULL STACK DEVELOPMENT
 on:
     push:
         branches: [main, dev]
+        paths:
+            - "code/backend1/**"
+            - "code/backend2/**"
     pull_request:
         branches: [main, dev]
+        paths:
+            - "code/backend1/**"
+            - "code/backend2/**"
 
 jobs:
-    frontend:
-        name: Build Frontend
-        runs-on: [First]
-        if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
-        paths:
-            - "code/frontend/**"
-        steps:
-            - name: Checkout Code
-              uses: actions/check out@v4
-
-            - name: Install Frontend Dependencies
-              run: |
-                  cd code/frontend
-                  yarn install
-
-            - name: Build Frontend
-              run: |
-                  cd code/frontend
-                  yarn build
-
     backend:
         name: Build Backend
         runs-on: [second]
         if: ${{ github.event_name == 'push' || github.event_name == 'pull_request' }}
-        paths:
-            - "code/backend1/**"
-            - "code/backend2/**"
         steps:
             - name: Checkout Code
               uses: actions/checkout@v4
