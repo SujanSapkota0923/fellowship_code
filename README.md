@@ -28,3 +28,5 @@ listen_addresses = 'localhost'
 
 In pg_hba.conf
 host    all     all     127.0.0.1/32    md5
+
+afa
