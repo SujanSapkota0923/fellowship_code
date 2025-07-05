@@ -45,7 +45,7 @@ jobs:
           yarn build
         # this uploads to the cache
       - name: Upload backend1 build
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: backend1-build
           path: code/backend1/dist
@@ -67,7 +67,7 @@ jobs:
           yarn build
 
       - name: Upload backend2 build
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: backend2-build
           path: code/backend2/dist
@@ -90,7 +90,7 @@ jobs:
           yarn build
 
       - name: Upload frontend build
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: frontend-build
           path: code/frontend/dist
