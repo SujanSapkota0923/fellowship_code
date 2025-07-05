@@ -141,7 +141,7 @@ jobs:
       
 
       - name: Deploy to Remote VM
-        uses: asingthemes/ssh-deploy@main
+        uses: docker/login-action@v3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
