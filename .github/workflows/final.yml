@@ -17,7 +17,7 @@ on:
 jobs:
   backend:
     name: backednd build and deploy
-    runs-on: Fist
+    runs-on: label1
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -140,25 +140,25 @@ jobs:
 
       
 
-      - name: Deploy to Remote VM
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
+      # - name: Deploy to Remote VM
+      #   uses: appleboy/ssh-action@v1.0.0
+      #   with:
+      #     host: ${{ secrets.SSH_HOST }}
+      #     username: ${{ secrets.SSH_USER }}
+      #     key: ${{ secrets.SSH_KEY }}
 
-          script: |
-            docker pull ${{ secrets.DOCKER_USERNAME }}/backend1:latest
-            docker pull ${{ secrets.DOCKER_USERNAME }}/backend2:latest
-            docker pull ${{ secrets.DOCKER_USERNAME }}/frontend:latest
+      #     script: |
+      #       docker pull ${{ secrets.DOCKER_USERNAME }}/backend1:latest
+      #       docker pull ${{ secrets.DOCKER_USERNAME }}/backend2:latest
+      #       docker pull ${{ secrets.DOCKER_USERNAME }}/frontend:latest
             
-            docker stop backend1 || true && docker rm backend1 || true
-            docker stop backend2 || true && docker rm backend2 || true
-            docker stop frontend || true && docker rm frontend || true
+      #       docker stop backend1 || true && docker rm backend1 || true
+      #       docker stop backend2 || true && docker rm backend2 || true
+      #       docker stop frontend || true && docker rm frontend || true
 
-            docker run -d --name backend1 -p 3001:3000 ${{ secrets.DOCKER_USERNAME }}/backend1:latest
-            docker run -d --name backend2 -p 3002:3000 ${{ secrets.DOCKER_USERNAME }}/backend2:latest
-            docker run -d --name frontend -p 80:80 ${{ secrets.DOCKER_USERNAME }}/frontend:latest
+      #       docker run -d --name backend1 -p 3001:3000 ${{ secrets.DOCKER_USERNAME }}/backend1:latest
+      #       docker run -d --name backend2 -p 3002:3000 ${{ secrets.DOCKER_USERNAME }}/backend2:latest
+      #       docker run -d --name frontend -p 80:80 ${{ secrets.DOCKER_USERNAME }}/frontend:latest
 
 
       - name: Create GitHub Release
