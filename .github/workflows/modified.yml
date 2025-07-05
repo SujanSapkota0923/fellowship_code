@@ -88,9 +88,9 @@ jobs:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
           script: |
             docker pull ${{ secrets.DOCKER_USERNAME }}/backend1:latest
             docker pull ${{ secrets.DOCKER_USERNAME }}/backend2:latest
