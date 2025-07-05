@@ -17,7 +17,7 @@ on:
 jobs:
   backend:
     name: backednd build and deploy
-    runs-on: [second, First]
+    runs-on: First
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
