@@ -32,7 +32,7 @@ jobs:
       - name: Cache Backend1
         uses: actions/cache@v3
         with:
-          path: ~/.cache/yarn
+          path: /Users/sujan/Library/Caches/Yarn/v6
           key: ${{ runner.os }}-backend1-yarn-${{ hashFiles('code/backend1/yarn.lock') }}
 
       - name: Install backend1 dependencies
@@ -54,7 +54,7 @@ jobs:
       - name: Cache Backend2
         uses: actions/cache@v3
         with:
-          path: ~/.cache/yarn
+          path: /Users/sujan/Library/Caches/Yarn/v6
           key: ${{ runner.os }}-backend2-yarn-${{ hashFiles('code/backend2/yarn.lock') }}
 
       - name: Install backend2 dependencies
@@ -77,7 +77,7 @@ jobs:
       - name: Cache frontend
         uses: actions/cache@v3
         with:
-          path: ~/.cache/yarn
+          path: /Users/sujan/Library/Caches/Yarn/v6
           key: ${{ runner.os }}-frontend-yarn-${{ hashFiles('code/frontend/yarn.lock') }}
 
       - name: Install frontend dependencies
