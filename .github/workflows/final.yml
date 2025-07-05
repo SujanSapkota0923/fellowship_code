@@ -13,7 +13,8 @@ on:
     #   - "code/backend1/**"
     #   - "code/backend2/**"
     #   - "code/frontend/**"
-
+permissions:
+  contents: write
 jobs:
   backend:
     name: backednd build and deploy
