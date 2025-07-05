@@ -141,7 +141,7 @@ jobs:
       
 
       - name: Deploy to Remote VM
-        uses: appleboy/ssh-action@v1.0.0
+        uses: maddox/actions-ssh@v1
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
