@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  backend:
     name: Backend + Frontend Build and Push
     runs-on: label1  
     steps:
@@ -83,7 +83,7 @@ jobs:
   deploy:
     name: Deploy to Remote VM
     runs-on: label2  #runs on fedora
-    needs: backednd
+    needs: backend
     steps:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.0
