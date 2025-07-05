@@ -3,16 +3,16 @@ name: FULL STACK DEVELOPMENT
 on:
   push:
     branches: [main, dev]
-    paths:
-      - "code/backend1/**"
-      - "code/backend2/**"
-      - "code/frontend/**"
+    # paths:
+    #   - "code/backend1/**"
+    #   - "code/backend2/**"
+    #   - "code/frontend/**"
   pull_request:
     branches: [main, dev]
-    paths:
-      - "code/backend1/**"
-      - "code/backend2/**"
-      - "code/frontend/**"
+    # paths:
+    #   - "code/backend1/**"
+    #   - "code/backend2/**"
+    #   - "code/frontend/**"
 
 jobs:
   backend:
@@ -141,7 +141,7 @@ jobs:
       
 
       - name: Deploy to Remote VM
-        uses: maddox/actions-ssh@v1
+        uses: asingthemes/ssh-deploy@main
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
