@@ -21,24 +21,75 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
+    # this searches for caching
+      - name: Cache Backend1
+        uses: actions/cache@v3
+        with:
+          path: /Users/sujan/Library/Caches/Yarn/v6
+          key: ${{ runner.os }}-backend1-yarn-${{ hashFiles('code/backend1/yarn.lock') }}
 
-      - name: Install and Build Backend1
+      - name: Install backend1 dependencies
         run: |
           cd code/backend1
           yarn install
-          yarn build
 
-      - name: Install and Build Backend2
+      - name: Build Backend1
+        run: |
+          cd code/backend1
+          yarn build
+        # this uploads to the cache
+      - name: Upload backend1 build
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend1-build
+          path: code/backend1/dist
+  
+      - name: Cache Backend2
+        uses: actions/cache@v3
+        with:
+          path: /Users/sujan/Library/Caches/Yarn/v6
+          key: ${{ runner.os }}-backend2-yarn-${{ hashFiles('code/backend2/yarn.lock') }}
+
+      - name: Install backend2 dependencies
         run: |
           cd code/backend2
           yarn install
+
+      - name: Build Backend2
+        run: |
+          cd code/backend2
           yarn build
 
-      - name: Install and Build Frontend
+      - name: Upload backend2 build
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend2-build
+          path: code/backend2/dist
+
+
+      - name: Cache frontend
+        uses: actions/cache@v3
+        with:
+          path: /Users/sujan/Library/Caches/Yarn/v6
+          key: ${{ runner.os }}-frontend-yarn-${{ hashFiles('code/frontend/yarn.lock') }}
+
+      - name: Install frontend dependencies
         run: |
           cd code/frontend
           yarn install
+
+      - name: Build frontend
+        run: |
+          cd code/frontend
           yarn build
+
+      - name: Upload frontend build
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+
+          path: code/frontend/dist
+      
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -105,11 +156,11 @@ jobs:
             docker run -d --name frontend -p 80:80 ${{ secrets.DOCKER_USERNAME }}/frontend:latest
 
   release:
-    name: Create GitHub Release
+    name: Create github release
     needs: backend
     runs-on: label1  
     steps:
-      - name: Create GitHub Release
+      - name: create github release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: release-${{ github.sha }}
