@@ -9,7 +9,3 @@ Nodejs and typescript starter template
 - Install all the dependencies using `yarn` or `npm install`.
 - Start the server using `yarn start` or `npm run start`.
 
-dd
-ada
-afa
-adfadfafdfad
