@@ -132,29 +132,24 @@ jobs:
 
 
   deploy:
-    name: Deploy to Remote VM
-    runs-on: label2  #runs on fedora
+    name: Deploy to Self (Fedora VM)
+    runs-on: label2
     needs: backend
     steps:
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.VM_HOST }}
-          username: ${{ secrets.VM_USER }}
-          key: ${{ secrets.VM_SSH_KEY }}
-          script: |
-            docker pull ${{ secrets.DOCKER_USERNAME }}/backend1:latest
-            docker pull ${{ secrets.DOCKER_USERNAME }}/backend2:latest
-            docker pull ${{ secrets.DOCKER_USERNAME }}/frontend:latest
-
-            docker stop backend1 || true && docker rm backend1 || true
-            docker stop backend2 || true && docker rm backend2 || true
-            docker stop frontend || true && docker rm frontend || true
-
-            docker run -d --name backend1 -p 3001:3000 ${{ secrets.DOCKER_USERNAME }}/backend1:latest
-            docker run -d --name backend2 -p 3002:3000 ${{ secrets.DOCKER_USERNAME }}/backend2:latest
-            docker run -d --name frontend -p 80:80 ${{ secrets.DOCKER_USERNAME }}/frontend:latest
-
+      - name: Pull and Run Docker Containers
+        run: |
+          docker pull ${{ secrets.DOCKER_USERNAME }}/backend1:latest
+          docker pull ${{ secrets.DOCKER_USERNAME }}/backend2:latest
+          docker pull ${{ secrets.DOCKER_USERNAME }}/frontend:latest
+  
+          docker stop backend1 || true && docker rm backend1 || true
+          docker stop backend2 || true && docker rm backend2 || true
+          docker stop frontend || true && docker rm frontend || true
+  
+          docker run -d --name backend1 -p 3001:3000 ${{ secrets.DOCKER_USERNAME }}/backend1:latest
+          docker run -d --name backend2 -p 3002:3000 ${{ secrets.DOCKER_USERNAME }}/backend2:latest
+          docker run -d --name frontend -p 80:80 ${{ secrets.DOCKER_USERNAME }}/frontend:latest
+  
   release:
     name: Create github release
     needs: backend
