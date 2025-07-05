@@ -12,8 +12,7 @@ permissions:
 jobs:
   build:
     name: Backend + Frontend Build and Push
-    runs-on: label1  # Mac M1 runner
-    outputs:
+    runs-on: label1  
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
