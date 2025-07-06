@@ -226,4 +226,37 @@ jobs:
           publish_dir: code/frontend/dist
 
 
+
+  db-migration:
+    name: databse migration
+    runs-on: label1
+    if: github.event_name == 'workflow_dispatch' # this will let user manually triggered.
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install migration dependencies
+        run: |
+          cd code/backend1 
+          yarn install 
+        # we are doing this again because this is another job. every job is independent
+
+      - name: Run Migrations
+        if: github.event.inputs.command == 'migrate'
+        run: |
+          cd code/backend1
+          yarn migrate:latest  
+
+      - name: Rollback Migrations
+        if: github.event.inputs.command == 'rollback'
+        run: |
+          cd code/backend1
+          yarn migrate:rollback 
+
+
     
