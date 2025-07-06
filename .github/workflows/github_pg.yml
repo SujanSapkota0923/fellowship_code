@@ -7,11 +7,11 @@ on:
     branches: [main, dev]
 
 permissions:
-  contents: write
+  contents: write   
 
 jobs:
-  backend:
-    name: Backend + Frontend Build and Push
+  backend1:
+    name: Backend1 Build and Push
     runs-on: label1  
     steps:
       - name: Checkout Code
@@ -21,23 +21,22 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-    # this searches for caching
+
       - name: Cache Backend1
         uses: actions/cache@v3
-        with:
+        with: 
           path: /Users/sujan/Library/Caches/Yarn/v6
           key: ${{ runner.os }}-backend1-yarn-${{ hashFiles('code/backend1/yarn.lock') }}
-
+      
       - name: Install backend1 dependencies
         run: |
           cd code/backend1
           yarn install
-
       - name: Build Backend1
         run: |
           cd code/backend1
-          yarn build
-        # this uploads to the cache
+          yarn build  
+
       - name: Upload backend1 build
         uses: actions/upload-artifact@v4
         with:
@@ -45,13 +44,24 @@ jobs:
           path: |
             code/backend1/dist
             code/backend1/node_modules
-  
+  backend2:
+    name: Backend2 Build and Push
+    runs-on: label2
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
       - name: Cache Backend2
         uses: actions/cache@v3
         with:
           path: /Users/sujan/Library/Caches/Yarn/v6
           key: ${{ runner.os }}-backend2-yarn-${{ hashFiles('code/backend2/yarn.lock') }}
-
+      
       - name: Install backend2 dependencies
         run: |
           cd code/backend2
@@ -61,7 +71,7 @@ jobs:
         run: |
           cd code/backend2
           yarn build
-
+      
       - name: Upload backend2 build
         uses: actions/upload-artifact@v4
         with:
@@ -69,20 +79,30 @@ jobs:
           path: |
             code/backend2/dist
             code/backend2/node_modules
+      
+  frontend:
+    name: Frontend Build and Push
+    runs-on: label1
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
-      - name: Cache frontend
+      - name: Cache Frontend
         uses: actions/cache@v3
         with:
           path: /Users/sujan/Library/Caches/Yarn/v6
-          key: ${{ runner.os }}-frontend-yarn-${{ hashFiles('code/frontend/yarn.lock') }}
+          key: ${{ runner.os }}-frontend-yarn-${{ hashFiles('code/frontend
 
       - name: Install frontend dependencies
         run: |
           cd code/frontend
           yarn install
-
-      - name: Build frontend
+      - name: Build Frontend
         run: |
           cd code/frontend
           yarn build
@@ -90,13 +110,15 @@ jobs:
       - name: Upload frontend build
         uses: actions/upload-artifact@v4
         with:
-          name: frontend-build
-
+          name: frontend-build  
           path: |
             code/frontend/dist
             code/frontend/node_modules
-      
-
+  docker:
+    name: Docker Build and Push
+    runs-on: label2
+    needs: [backend1, backend2, frontend]
+    steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       
@@ -147,12 +169,11 @@ jobs:
             ${{ secrets.DOCKER_USERNAME }}/frontend:${{ github.sha }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
-
-
+  
   deploy:
     name: Deploy to Self (Fedora VM)
     runs-on: label2
-    needs: backend
+    needs: docker
     steps:
       - name: Pull and Run Docker Containers
         run: |
@@ -167,10 +188,10 @@ jobs:
           docker run -d --name backend1 -p 3001:3000 ${{ secrets.DOCKER_USERNAME }}/backend1:latest
           docker run -d --name backend2 -p 3002:3000 ${{ secrets.DOCKER_USERNAME }}/backend2:latest
           docker run -d --name frontend -p 80:80 ${{ secrets.DOCKER_USERNAME }}/frontend:latest
-  
+
   release:
     name: Create github release
-    needs: backend
+    needs: [backend1, backend2, frontend]
     runs-on: label1  
     steps:
       - name: create github release
@@ -185,8 +206,8 @@ jobs:
 
   deploy-frontend:
     name: Deploy Frontend to GitHub Pages
-    runs-on: label1
-    needs: backend
+    runs-on: label2
+    needs: [backend1, backend2, frontend, docker]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -202,3 +223,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: code/frontend/dist
+
+
+    
