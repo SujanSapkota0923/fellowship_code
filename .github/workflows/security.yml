@@ -216,41 +216,37 @@ jobs:
 
   deploy-frontend:
     name: Deploy Frontend to GitHub Pages
-    runs-on: ubuntu-latest  
-    # runs-on: label1
+    runs-on: ubuntu-latest
     needs: [frontend]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
+    
       - name: Create publish directory
-        run: mkdir public_frontend_build # Create a new directory
-
+        run: mkdir public_frontend_build
+    
       - name: Download frontend build artifact
         uses: actions/download-artifact@v4
         with:
           name: frontend-build
-          path: public_frontend_build # Download the artifact contents here
-
-      - name: Move contents to root of publish directory
+          path: public_frontend_build
+        
+      - name: Move built files to publish root
         run: |
-          # The artifact 'frontend-build' itself contains 'dist' and 'node_modules'
-          # So after download, `public_frontend_build` will contain `public_frontend_build/dist/...`
-          # We want the *contents* of `dist` to be at the root of `public_frontend_build`
-          mv public_frontend_build/code/frontend/dist/* public_frontend_build/ # Correctly move built files
-          rm -r public_frontend_build/code # Clean up the extra directory structure
-
+          mv public_frontend_build/code/frontend/dist/* public_frontend_build/
+          rm -rf public_frontend_build/code
+        
+      - name: Show final structure (debug)
+        run: ls -R public_frontend_build
+        
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: public_frontend_build # Publish this directory
+          publish_dir: public_frontend_build
           publish_branch: gh-pages
-      - name: Show dist contents before deploying
-        run: ls -R public_frontend_build # Check the contents here
-      - name: Show current directory
-        run: pwd
-
+        
+        
   db-migration:
     name: databse migration
     runs-on: ubuntu-latest  
