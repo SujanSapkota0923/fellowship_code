@@ -2,6 +2,7 @@
   "name": "frontend",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://sujansapkota0923.github.io/fellowship_code/",
   "type": "module",
   "scripts": {
     "dev": "vite",
