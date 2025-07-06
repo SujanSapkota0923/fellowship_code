@@ -12,7 +12,8 @@ permissions:
 jobs:
   backend1:
     name: Backend1 Build and Push
-    runs-on: label1  
+    runs-on: ubuntu-latest  
+    # runs-on: label1
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -46,7 +47,8 @@ jobs:
             code/backend1/node_modules
   backend2:
     name: Backend2 Build and Push
-    runs-on: label2
+    runs-on: ubuntu-latest  
+    # runs-on: label2
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -82,7 +84,8 @@ jobs:
       
   frontend:
     name: Frontend Build and Push
-    runs-on: label1
+    runs-on: ubuntu-latest  
+    # runs-on: label1
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -116,7 +119,8 @@ jobs:
             code/frontend/node_modules
   docker:
     name: Docker Build and Push
-    runs-on: label2
+    runs-on: ubuntu-latest  
+    # runs-on: label1
     needs: [backend1, backend2, frontend]
     steps:
       - name: Set up Docker Buildx
@@ -172,7 +176,8 @@ jobs:
   
   deploy:
     name: Deploy to Self (Fedora VM)
-    runs-on: label2
+    runs-on: ubuntu-latest  
+    # runs-on: label2
     needs: docker
     steps:
       - name: Pull and Run Docker Containers
@@ -192,7 +197,8 @@ jobs:
   release:
     name: Create github release
     needs: [backend1, backend2, frontend]
-    runs-on: label1  
+    runs-on: ubuntu-latest  
+    # runs-on: label1  
     steps:
       - name: create github release
         uses: softprops/action-gh-release@v1
@@ -206,7 +212,8 @@ jobs:
 
   deploy-frontend:
     name: Deploy Frontend to GitHub Pages
-    runs-on: label2
+    runs-on: ubuntu-latest  
+    # runs-on: label1
     needs: [backend1, backend2, frontend, docker]
     steps:
       - name: Checkout code
