@@ -216,37 +216,31 @@ jobs:
 
   deploy-frontend:
     name: Deploy Frontend to GitHub Pages
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  
+    # runs-on: label1
     needs: [frontend]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-    
-      - name: Create publish directory
-        run: mkdir public_frontend_build
-    
-      - name: Download frontend build artifact
+
+      - name: download frontend build artifact
         uses: actions/download-artifact@v4
         with:
           name: frontend-build
-          path: public_frontend_build
-        
-      - name: Move built files to publish root
-        run: |
-          mv public_frontend_build/code/frontend/dist/* public_frontend_build/
-          rm -rf public_frontend_build/code
-        
-      - name: Show final structure (debug)
-        run: ls -R public_frontend_build
-        
+          path: code/frontend/dist
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: public_frontend_build
+          publish_dir: code/frontend/dist
           publish_branch: gh-pages
-        
-        
+          
+      - name: Show dist contents before deploying
+        run: ls -R code/frontend/dist
+      - name: Show current directory
+        run: pwd
+
   db-migration:
     name: databse migration
     runs-on: ubuntu-latest  
