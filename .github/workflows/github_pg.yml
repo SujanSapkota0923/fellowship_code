@@ -42,7 +42,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: backend1-build
-          path: code/backend1/dist
+          path: |
+            code/backend1/dist
+            code/backend1/node_modules
   
       - name: Cache Backend2
         uses: actions/cache@v3
@@ -64,7 +66,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: backend2-build
-          path: code/backend2/dist
+          path: |
+            code/backend2/dist
+            code/backend2/node_modules
 
 
       - name: Cache frontend
@@ -88,12 +92,20 @@ jobs:
         with:
           name: frontend-build
 
-          path: code/frontend/dist
+          path: |
+            code/frontend/dist
+            code/frontend/node_modules
       
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-
+      
+      - name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /Users/sujan/Library/Caches/Yarn/v6
+          key: ${{ runner.os }}-docker-${{ github.sha }}
+          
       - name: Log in to DockerHub
         uses: docker/login-action@v3
         with: 
@@ -104,11 +116,13 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./code/backend1
-          file: ./code/backend1/Dockerfile
+          file: ./code/backend1/Dockerfile  
           push: true
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/backend1:latest
             ${{ secrets.DOCKER_USERNAME }}/backend1:${{ github.sha }}
+          cache-from: type=local,src=/Users/sujan/Library/Caches/Yarn/v6
+          cache-to: type=local,dest=/Users/sujan/Library/Caches/Yarn/v6
 
       - name: Build and Push Backend2 Image
         uses: docker/build-push-action@v5
@@ -119,6 +133,8 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/backend2:latest
             ${{ secrets.DOCKER_USERNAME }}/backend2:${{ github.sha }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
 
       - name: Build and Push Frontend Image
         uses: docker/build-push-action@v5
@@ -129,6 +145,8 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/frontend:latest
             ${{ secrets.DOCKER_USERNAME }}/frontend:${{ github.sha }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
 
 
   deploy:
@@ -164,3 +182,23 @@ jobs:
             Automated release from GitHub Actions.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy-frontend:
+    name: Deploy Frontend to GitHub Pages
+    runs-on: label1
+    needs: backend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: download frontend build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-build
+          path: dist
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: dist
