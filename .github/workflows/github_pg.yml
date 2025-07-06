@@ -91,12 +91,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
+          cache: 'yarn'
 
-      - name: Cache Frontend
-        uses: actions/cache@v3
-        with:
-          path: /Users/sujan/Library/Caches/Yarn/v6
-          key: ${{ runner.os }}-frontend-yarn-${{ hashFiles('code/frontend/yarn.lock') }}
+      # - name: Cache Frontend
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: /Users/sujan/Library/Caches/Yarn/v6
+      #     key: ${{ runner.os }}-frontend-yarn-${{ hashFiles('code/frontend/yarn.lock') }}
 
       - name: Install frontend dependencies
         run: |
@@ -125,7 +126,7 @@ jobs:
       - name: Cache Docker layers
         uses: actions/cache@v3
         with:
-          path: /Users/sujan/Library/Caches/Yarn/v6
+          path: /tmp/.buildx-cache
           key: ${{ runner.os }}-docker-${{ github.sha }}
           
       - name: Log in to DockerHub
@@ -143,8 +144,8 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/backend1:latest
             ${{ secrets.DOCKER_USERNAME }}/backend1:${{ github.sha }}
-          cache-from: type=local,src=/Users/sujan/Library/Caches/Yarn/v6
-          cache-to: type=local,dest=/Users/sujan/Library/Caches/Yarn/v6
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
 
       - name: Build and Push Backend2 Image
         uses: docker/build-push-action@v5
