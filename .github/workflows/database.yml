@@ -5,6 +5,16 @@ on:
     branches: [main, dev]
   pull_request:
     branches: [main, dev]
+  workflow_dispatch:
+    inputs:
+      command:
+        description: 'Migration command to execute'
+        required: true
+        default: migrate
+        type: choice
+        options:
+          - migrate
+          - rollback
 
 permissions:
   contents: write   
