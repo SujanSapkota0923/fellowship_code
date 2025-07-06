@@ -138,16 +138,16 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and Push Backend1 Image
+      - name: Build and Push Backend1 Docker Image
         uses: docker/build-push-action@v5
         with:
           context: ./code/backend1
-          file: ./code/backend1/Dockerfile  
+          file: ./code/backend1/Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/backend1:latest
-            ${{ secrets.DOCKER_USERNAME }}/backend1:${{ github.sha }}
-          
+            ${{secrets.DOCKER_USERNAME}}/backend1:latest
+            ${{secrets.DOCKER_USERNAME}}/backend1:${{github.sha}}
+
 
       - name: Build and Push Backend2 Image
         uses: docker/build-push-action@v5
