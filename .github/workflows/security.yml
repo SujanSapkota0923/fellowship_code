@@ -314,7 +314,7 @@ jobs:
         with:
           name: scan-results
           path: scan-results
-    publish-scan:
+  publish-scan:
     name: Publish Trivy Scan to GitHub Pages /scan
     runs-on: ubuntu-latest
     needs: security-scan
