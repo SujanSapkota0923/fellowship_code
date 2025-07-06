@@ -241,7 +241,8 @@ jobs:
     name: databse migration
     runs-on: ubuntu-latest  
     # runs-on: label1
-    if: github.event_name == 'workflow_dispatch' # this will let user manually triggered.
+    # if: github.event_name == 'workflow_dispatch' # this will let user manually triggered.
+    # couldn't perform this due to some error. 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -268,6 +269,42 @@ jobs:
         run: |
           cd code/backend1
           yarn migrate:rollback 
+          
+  security-scan:
+    name: Trivy Security Scan
+    runs-on: ubuntu-latest
+    needs: frontend
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Trivy
+        run: |
+          brew install aquasecurity/trivy/trivy
+
+      - name: Create Trivy Output Directory
+        run: mkdir -p scan-results
+
+      - name: Run Trivy Scan for Backend1
+        run: |
+          trivy image --format template --template "@/usr/local/Cellar/trivy/*/share/trivy/templates/html.tpl" \
+            --output scan-results/backend1.html ${{ secrets.DOCKER_USERNAME }}/backend1:latest
+
+      - name: Run Trivy Scan for Backend2
+        run: |
+          trivy image --format template --template "@/usr/local/Cellar/trivy/*/share/trivy/templates/html.tpl" \
+            --output scan-results/backend2.html ${{ secrets.DOCKER_USERNAME }}/backend2:latest
+
+      - name: Run Trivy Scan for Frontend
+        run: |
+          trivy image --format template --template "@/usr/local/Cellar/trivy/*/share/trivy/templates/html.tpl" \
+            --output scan-results/frontend.html ${{ secrets.DOCKER_USERNAME }}/frontend:latest
+
+      - name: Upload scan results as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: scan-results
+          path: scan-results
 
 
     
