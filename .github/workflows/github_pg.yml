@@ -96,7 +96,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: /Users/sujan/Library/Caches/Yarn/v6
-          key: ${{ runner.os }}-frontend-yarn-${{ hashFiles('code/frontend
+          key: ${{ runner.os }}-frontend-yarn-${{ hashFiles('code/frontend/yarn.lock') }}
 
       - name: Install frontend dependencies
         run: |
