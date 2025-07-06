@@ -235,8 +235,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: code/frontend/dist
 
-
-
   db-migration:
     name: databse migration
     runs-on: ubuntu-latest  
@@ -278,26 +276,36 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up Trivy
+      - name: Install Trivy on Ubuntu
         run: |
-          brew install aquasecurity/trivy/trivy
+          sudo apt-get update
+          sudo apt-get install -y wget apt-transport-https gnupg lsb-release
+          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo gpg --dearmor -o /usr/share/keyrings/trivy.gpg
+          echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/trivy.list
+          sudo apt-get update
+          sudo apt-get install -y trivy  
+          # if used macos, then use brew install trivy
+          
 
       - name: Create Trivy Output Directory
         run: mkdir -p scan-results
 
       - name: Run Trivy Scan for Backend1
         run: |
-          trivy image --format template --template "@/usr/local/Cellar/trivy/*/share/trivy/templates/html.tpl" \
+          trivy image --format template \
+            --template "$(trivy -h | grep 'html.tpl' | awk '{print $2}')" \
             --output scan-results/backend1.html ${{ secrets.DOCKER_USERNAME }}/backend1:latest
 
       - name: Run Trivy Scan for Backend2
         run: |
-          trivy image --format template --template "@/usr/local/Cellar/trivy/*/share/trivy/templates/html.tpl" \
+          trivy image --format template \
+            --template "$(trivy -h | grep 'html.tpl' | awk '{print $2}')" \
             --output scan-results/backend2.html ${{ secrets.DOCKER_USERNAME }}/backend2:latest
 
       - name: Run Trivy Scan for Frontend
         run: |
-          trivy image --format template --template "@/usr/local/Cellar/trivy/*/share/trivy/templates/html.tpl" \
+          trivy image --format template \
+            --template "$(trivy -h | grep 'html.tpl' | awk '{print $2}')" \
             --output scan-results/frontend.html ${{ secrets.DOCKER_USERNAME }}/frontend:latest
 
       - name: Upload scan results as artifact
@@ -305,6 +313,7 @@ jobs:
         with:
           name: scan-results
           path: scan-results
+
 
 
     
