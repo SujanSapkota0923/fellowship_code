@@ -147,9 +147,7 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/backend1:latest
             ${{ secrets.DOCKER_USERNAME }}/backend1:${{ github.sha }}
-          cache-from: type=local,src=/Users/sujan/Library/Caches/Yarn/v6
-          cache-to: type=local,dest=/Users/sujan/Library/Caches/Yarn/v6
-
+          
 
       - name: Build and Push Backend2 Image
         uses: docker/build-push-action@v5
