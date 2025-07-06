@@ -2,9 +2,9 @@ name: FULL STACK DEVELOPMENT
 
 on:
   push:
-    branches: [main, dev]
+    branches: [main, dev, gh-pages]
   pull_request:
-    branches: [main, dev]
+    branches: [main, dev, gh-pages]
   workflow_dispatch:
     inputs:
       command:
