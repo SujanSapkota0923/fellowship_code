@@ -117,12 +117,7 @@ jobs:
           path: |
             code/frontend/dist
             code/frontend/node_modules
-  docker:
-    name: Docker Build and Push
-    runs-on: ubuntu-latest  
-    # runs-on: label1
-    needs: [backend1, backend2, frontend]
-    steps:
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       
