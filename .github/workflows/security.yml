@@ -2,9 +2,9 @@ name: FULL STACK DEVELOPMENT
 
 on:
   push:
-    branches: [main, dev, gh-pages]
+    branches: [main, dev]
   pull_request:
-    branches: [main, dev, gh-pages]
+    branches: [main, dev]
   workflow_dispatch:
     inputs:
       command:
@@ -235,6 +235,10 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: code/frontend/dist
           publish_branch: gh-pages
+      - name: Show dist contents before deploying
+        run: ls -R code/frontend/dist
+      - name: Show current directory
+        run: pwd
 
   db-migration:
     name: databse migration
