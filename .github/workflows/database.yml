@@ -239,8 +239,9 @@ jobs:
 
   db-migration:
     name: databse migration
-    runs-on: label1
-    if: github.event_name == 'workflow_dispatch' # this will let user manually triggered.
+    runs-on: ubuntu-latest  
+    # runs-on: label1
+    # if: github.event_name == 'workflow_dispatch' # this will let user manually triggered.
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
