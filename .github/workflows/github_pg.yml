@@ -172,7 +172,7 @@ jobs:
     name: Deploy to Self (Fedora VM)
     runs-on: ubuntu-latest  
     # runs-on: label2
-    needs: docker
+    needs: [backend1, backend2, frontend]
     steps:
       - name: Pull and Run Docker Containers
         run: |
@@ -208,7 +208,7 @@ jobs:
     name: Deploy Frontend to GitHub Pages
     runs-on: ubuntu-latest  
     # runs-on: label1
-    needs: [backend1, backend2, frontend, docker]
+    needs: [backend1, backend2, frontend]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
