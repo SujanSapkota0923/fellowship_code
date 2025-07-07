@@ -219,15 +219,21 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: frontend-build
-          # path: code/frontend/
           path: dist
+          # path: code/frontend/dist
+      - name: Show dist contents before deploying
+        run: ls -R code/frontend/dist
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: code/frontend/
+          # publish_dir: code/frontend/dist/
+          publish_dir: dist
           publish_branch: gh-pages
+      
+      - name: Disable Jekyll on GitHub Pages
+        run: touch dist/.nojekyll
           
       - name: Show dist contents before deploying
         run: ls -R code/frontend/dist
