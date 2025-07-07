@@ -221,8 +221,7 @@ jobs:
           name: frontend-build
           path: .
           # path: code/frontend/dist
-      - name: Disable Jekyll on GitHub Pages
-        run: touch dist/.nojekyll
+     
       
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
