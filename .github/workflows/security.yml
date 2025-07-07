@@ -116,7 +116,8 @@ jobs:
         with:
           name: frontend-build  
           path: |
-            code/frontend/
+            # code/frontend
+            code/frontend/dist
 
 
       - name: Set up Docker Buildx
@@ -218,7 +219,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: frontend-build
-          path: code/frontend/
+          # path: code/frontend/
+          path: dist
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
