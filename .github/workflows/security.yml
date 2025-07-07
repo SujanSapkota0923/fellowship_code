@@ -228,7 +228,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: frontend-build
-          path: code/frontend/dist
+          path: code/frontend/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
@@ -246,8 +246,7 @@ jobs:
     name: databse migration
     runs-on: ubuntu-latest  
     # runs-on: label1
-    # if: github.event_name == 'workflow_dispatch' # this will let user manually triggered.
-    # couldn't perform this due to some error. 
+    if: github.event_name == 'workflow_dispatch' # this will let user manually triggered.
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
