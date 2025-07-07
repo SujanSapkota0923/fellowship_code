@@ -105,16 +105,17 @@ jobs:
         with:
           node-version: '18'
 
-      # - name: Cache Frontend
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: /Users/sujan/Library/Caches/Yarn/v6
-      #     key: ${{ runner.os }}-frontend-yarn-${{ hashFiles('code/frontend/yarn.lock') }}
+      - name: Cache Frontend
+        uses: actions/cache@v3
+        with:
+          path: /Users/sujan/Library/Caches/Yarn/v6
+          key: ${{ runner.os }}-frontend-yarn-${{ hashFiles('code/frontend/yarn.lock') }}
 
       - name: Install frontend dependencies
         run: |
           cd code/frontend
           yarn install
+
       - name: Build Frontend
         run: |
           cd code/frontend
@@ -125,8 +126,8 @@ jobs:
         with:
           name: frontend-build  
           path: |
-            code/frontend/dist
-            code/frontend/node_modules
+            code/frontend/
+
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
