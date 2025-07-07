@@ -15,7 +15,8 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Box sx={{ minHeight: "100vh", width: '100%', bgcolor: "#f5f5f5" }}>
-          <Router>
+          <Router basename="/fellowship_code">
+
             <Routes>
               <Route path="/" element={<Navigate to="/blogs" replace />} />
               <Route path="/blogs" element={<AllBlogs />} />

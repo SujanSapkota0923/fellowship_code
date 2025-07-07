@@ -291,6 +291,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y trivy  
           # if used macos, then use brew install trivy
+
+          
           
 
       - name: Create Trivy Output Directory
