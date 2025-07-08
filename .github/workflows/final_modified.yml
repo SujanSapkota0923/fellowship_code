@@ -19,7 +19,7 @@ jobs:
   detect-changes:
     runs-on: ubuntu-latest
     outputs:
-      backend1: ${{ steps.filter.outputs.backend1 }} // -----------------------------------------
+      backend1: ${{ steps.filter.outputs.backend1 }} 
       backend2: ${{ steps.filter.outputs.backend2 }}
       frontend: ${{ steps.filter.outputs.frontend }}
     steps:
