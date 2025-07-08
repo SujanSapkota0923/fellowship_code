@@ -62,7 +62,7 @@ jobs:
         with:
           node-version: "lts/*"
           cache: yarn
-          cache-dependency-path: backend1/yarn.lock
+          cache-dependency-path: code/backend1/yarn.lock
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
@@ -90,7 +90,7 @@ jobs:
       - uses: docker/build-push-action@v5
         with:
           context: backend1
-          file: backend1/Dockerfile
+          file: code/backend1/Dockerfile
           push: true
           tags: |
             docker.io/${{ secrets.DOCKER_USERNAME }}/backend1:${{ needs.release-backend1.outputs.version }}
@@ -116,7 +116,7 @@ jobs:
         with:
           node-version: "lts/*"
           cache: yarn
-          cache-dependency-path: backend2/yarn.lock
+          cache-dependency-path: code/backend2/yarn.lock
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Run semantic-release
@@ -143,7 +143,7 @@ jobs:
       - uses: docker/build-push-action@v5
         with:
           context: backend2
-          file: backend2/Dockerfile
+          file: code/backend2/Dockerfile
           push: true
           tags: |
             docker.io/${{ secrets.DOCKER_USERNAME }}/backend2:${{ needs.release-backend2.outputs.version }}
@@ -168,7 +168,7 @@ jobs:
         with:
           node-version: "lts/*"
           cache: yarn
-          cache-dependency-path: frontend/yarn.lock
+          cache-dependency-path: code/frontend/yarn.lock
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Run semantic-release
@@ -195,7 +195,7 @@ jobs:
       - uses: docker/build-push-action@v5
         with:
           context: frontend
-          file: frontend/Dockerfile
+          file: code/frontend/Dockerfile
           push: true
           tags: |
             docker.io/${{ secrets.DOCKER_USERNAME }}/frontend:${{ needs.release-frontend.outputs.version }}
