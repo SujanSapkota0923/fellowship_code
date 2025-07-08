@@ -38,7 +38,7 @@ jobs:
           base: ${{ env.PREV_COMMIT }}
           filters: |
             backend1:
-              - 'code/backend1/**'  // -----------------------------------------
+              - 'code/backend1/**' 
             backend2:
               - 'code/backend2/**'
             frontend:
