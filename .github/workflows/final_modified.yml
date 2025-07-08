@@ -38,7 +38,7 @@ jobs:
           base: ${{ env.PREV_COMMIT }}
           filters: |
             backend1:
-              - 'code/backend1/**'  // -----------------------------------------
+              - 'code/backend1/**'  
             backend2:
               - 'code/backend2/**'
             frontend:
@@ -202,3 +202,50 @@ jobs:
             docker.io/${{ secrets.DOCKER_USERNAME }}/frontend:latest
           cache-from: type=registry,ref=docker.io/${{ secrets.DOCKER_USERNAME }}/frontend:buildcache
           cache-to: type=registry,ref=docker.io/${{ secrets.DOCKER_USERNAME }}/frontend:buildcache,mode=max
+
+  upload-pages-artifact:
+    name: Upload GitHub Pages Artifact
+    needs: release-frontend
+    if: needs.detect-changes.outputs.frontend == 'true'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: code/frontend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: yarn
+          cache-dependency-path: code/frontend/yarn.lock
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build frontend
+        run: yarn build  # assumes output goes into ./dist/
+
+      - name: Upload build as GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: ./code/frontend/dist
+
+  deploy-frontend:
+    name: Deploy Frontend to GitHub Pages
+    needs: upload-pages-artifact
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write      # Required to deploy to GitHub Pages
+      id-token: write   # Required for OIDC
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v3
+
+
